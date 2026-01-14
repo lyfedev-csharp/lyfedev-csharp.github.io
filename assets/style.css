@@ -1,16 +1,11 @@
-/* --- 1. VARIABLES & RESET --- */
+/* --- RESET & FONTS --- */
 :root {
     --bg-color: #050505;
     --text-color: #ffffff;
     --text-muted: #888888;
-    --accent-glow: rgba(199, 125, 255, 0.15);
-    --accent-solid: #c77dff;
+    --accent-glow: rgba(199, 125, 255, 0.15); /* Purple tint from your logo */
     --glass-border: rgba(255, 255, 255, 0.08);
     --glass-bg: rgba(255, 255, 255, 0.03);
-    
-    /* New Slider Variables */
-    --card-width: 320px;
-    --gap: 30px;
 }
 
 * {
@@ -27,24 +22,11 @@ body {
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
-    position: relative;
 }
 
-/* --- 2. GLOBAL EFFECTS (Noise & Glow) --- */
-/* Noise Texture */
-body::before {
-    content: "";
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
-    opacity: 0.4;
-    pointer-events: none;
-    z-index: -1;
-}
-
-/* Breathing Background Glow */
+/* --- BACKGROUND GLOW --- */
 .glow-bg {
-    position: fixed;
+    position: absolute;
     top: -200px;
     left: 50%;
     transform: translateX(-50%);
@@ -53,17 +35,11 @@ body::before {
     max-width: 800px;
     max-height: 800px;
     background: radial-gradient(circle, var(--accent-glow) 0%, rgba(0,0,0,0) 70%);
-    z-index: -2;
+    z-index: -1;
     pointer-events: none;
-    animation: pulseGlow 8s ease-in-out infinite alternate;
 }
 
-@keyframes pulseGlow {
-    0% { opacity: 0.5; transform: translateX(-50%) scale(1); }
-    100% { opacity: 1; transform: translateX(-50%) scale(1.2); }
-}
-
-/* --- 3. NAVIGATION --- */
+/* --- NAVIGATION --- */
 nav {
     display: flex;
     justify-content: space-between;
@@ -102,9 +78,8 @@ nav {
     transition: color 0.3s ease;
 }
 
-.nav-links a:hover, .nav-links a.active {
+.nav-links a:hover {
     color: #fff;
-    text-shadow: 0 0 10px rgba(255,255,255,0.3);
 }
 
 .nav-btn {
@@ -121,10 +96,9 @@ nav {
 .nav-btn:hover {
     background-color: #fff;
     color: #000;
-    box-shadow: 0 0 15px rgba(255,255,255,0.4);
 }
 
-/* --- 4. HERO SECTION --- */
+/* --- HERO SECTION --- */
 .hero {
     padding: 120px 20px 60px;
     text-align: center;
@@ -134,7 +108,7 @@ nav {
 }
 
 h1 {
-    font-size: clamp(3.5rem, 8vw, 6rem);
+    font-size: clamp(3.5rem, 8vw, 6rem); /* Responsive giant text */
     font-weight: 700;
     letter-spacing: -2px;
     margin-bottom: 20px;
@@ -152,7 +126,7 @@ h1 {
     line-height: 1.6;
 }
 
-/* --- 5. BUTTONS & STATUS --- */
+/* --- BUTTONS --- */
 .cta-container {
     display: flex;
     gap: 15px;
@@ -187,6 +161,7 @@ h1 {
     background-color: rgba(255,255,255,0.1);
 }
 
+/* --- STATUS DOT --- */
 .status {
     display: flex;
     align-items: center;
@@ -208,7 +183,7 @@ h1 {
     box-shadow: 0 0 10px #00ff88;
 }
 
-/* --- 6. GRIDS & CARDS (Restored) --- */
+/* --- FEATURES GRID --- */
 .features {
     max-width: 1200px;
     margin: 40px auto;
@@ -246,104 +221,7 @@ h1 {
     line-height: 1.6;
 }
 
-/* Team Page Images (Moved here for safety) */
-.worker-img {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid rgba(255,255,255,0.1);
-    margin-bottom: 15px;
-}
-
-/* --- 7. NEW: INFINITE SLIDER --- */
-.slider-container {
-    width: 100%;
-    margin-top: 40px;
-    overflow: hidden; 
-    position: relative;
-    display: flex; 
-}
-
-/* Fade masks */
-.slider-container:not(.no-mask)::before,
-.slider-container:not(.no-mask)::after {
-    content: "";
-    position: absolute; top: 0; width: 150px; height: 100%; z-index: 2; pointer-events: none;
-}
-.slider-container::before { left: 0; background: linear-gradient(to right, var(--bg-color), transparent); }
-.slider-container::after { right: 0; background: linear-gradient(to left, var(--bg-color), transparent); }
-
-.slider-track {
-    display: flex;
-    width: max-content;
-    gap: var(--gap);
-    padding-bottom: 20px;
-}
-
-/* State: Active (Moving) */
-.slider-track.scroll-active {
-    animation: scrollLeft 40s linear infinite;
-}
-
-/* State: Static (Centered) */
-.slider-track.scroll-static {
-    width: 100%;
-    justify-content: center;
-    padding-left: 20px; padding-right: 20px;
-}
-
-.slider-track.scroll-active:hover { animation-play-state: paused; }
-
-.review-card {
-    width: var(--card-width);
-    height: 200px;
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    border-radius: 12px;
-    overflow: hidden;
-    position: relative;
-    transition: transform 0.3s ease, border-color 0.3s ease;
-    flex-shrink: 0;
-    text-decoration: none;
-    display: block;
-}
-
-.review-card:hover {
-    transform: scale(1.02);
-    border-color: var(--accent-solid);
-    box-shadow: 0 5px 20px rgba(199, 125, 255, 0.1);
-}
-
-.review-thumb { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; transition: opacity 0.3s; }
-.review-card:hover .review-thumb { opacity: 1; }
-
-.play-overlay {
-    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-    background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
-    width: 50px; height: 50px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    border: 1px solid rgba(255,255,255,0.2);
-}
-
-.play-icon {
-    width: 0; height: 0; 
-    border-top: 8px solid transparent; border-bottom: 8px solid transparent;
-    border-left: 12px solid #fff; margin-left: 3px;
-}
-
-.review-title {
-    position: absolute; bottom: 0; left: 0; width: 100%; padding: 15px;
-    background: linear-gradient(to top, #000, transparent);
-    color: #fff; font-size: 0.9rem; font-weight: 500;
-}
-
-@keyframes scrollLeft {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); } 
-}
-
-/* --- 8. FOOTER & ANIMATIONS --- */
+/* --- FOOTER --- */
 footer {
     text-align: center;
     padding: 60px 20px;
@@ -352,7 +230,12 @@ footer {
     margin-top: auto;
 }
 
-.fade-in { opacity: 0; animation: fadeUp 0.8s ease forwards; }
+/* --- ANIMATIONS --- */
+.fade-in {
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards;
+}
+
 .fade-in:nth-child(1) { animation-delay: 0.1s; }
 .fade-in:nth-child(2) { animation-delay: 0.2s; }
 .fade-in:nth-child(3) { animation-delay: 0.3s; }
@@ -362,13 +245,14 @@ footer {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* --- 9. MOBILE RESPONSIVE --- */
+/* --- MOBILE --- */
 @media (max-width: 768px) {
-    nav { flex-direction: column; gap: 15px; }
-    .hero { padding-top: 80px; }
+    nav {
+        flex-direction: column;
+        gap: 15px;
+    }
     
-    .slider-track.scroll-static {
-        justify-content: flex-start;
-        overflow-x: auto;
+    .hero {
+        padding-top: 80px;
     }
 }
