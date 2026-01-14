@@ -184,17 +184,19 @@ h1 {
     background-color: rgba(255,255,255,0.1);
 }
 
-/* --- SCROLLING REVIEWS (The "Genesis" Style) --- */
+/* --- SCROLLING REVIEWS --- */
 .slider-container {
     width: 100%;
     margin-top: 40px;
-    overflow: hidden; /* Hides the scrollbar */
+    overflow: hidden; 
     position: relative;
+    /* For static centering */
+    display: flex; 
 }
 
-/* Fade effect on sides of the slider */
-.slider-container::before,
-.slider-container::after {
+/* Fade masks (Only show these when scrolling) */
+.slider-container:not(.no-mask)::before,
+.slider-container:not(.no-mask)::after {
     content: "";
     position: absolute;
     top: 0;
@@ -204,28 +206,35 @@ h1 {
     pointer-events: none;
 }
 
-.slider-container::before {
-    left: 0;
-    background: linear-gradient(to right, var(--bg-color), transparent);
-}
-
-.slider-container::after {
-    right: 0;
-    background: linear-gradient(to left, var(--bg-color), transparent);
-}
+.slider-container::before { left: 0; background: linear-gradient(to right, var(--bg-color), transparent); }
+.slider-container::after { right: 0; background: linear-gradient(to left, var(--bg-color), transparent); }
 
 .slider-track {
     display: flex;
-    width: max-content; /* Auto-width based on content */
+    width: max-content;
     gap: var(--gap);
+    padding-bottom: 20px; /* Space for scrollbar if static */
+}
+
+/* STATE A: ACTIVE (More than 5 items) - Auto Scroll */
+.slider-track.scroll-active {
     animation: scrollLeft 40s linear infinite;
 }
 
-/* Pause animation on hover so people can click links */
-.slider-track:hover {
+/* STATE B: STATIC (5 or less) - Centered & Manual Scroll */
+.slider-track.scroll-static {
+    width: 100%; /* Fill container */
+    justify-content: center; /* Center items */
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/* Hover pause */
+.slider-track.scroll-active:hover {
     animation-play-state: paused;
 }
 
+/* Review Card Styling */
 .review-card {
     width: var(--card-width);
     height: 200px;
@@ -246,75 +255,38 @@ h1 {
     box-shadow: 0 5px 20px rgba(199, 125, 255, 0.1);
 }
 
-.review-thumb {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0.6;
-    transition: opacity 0.3s;
-}
-
-.review-card:hover .review-thumb {
-    opacity: 1;
-}
+.review-thumb { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; transition: opacity 0.3s; }
+.review-card:hover .review-thumb { opacity: 1; }
 
 .play-overlay {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(0,0,0,0.6);
-    backdrop-filter: blur(4px);
-    width: 50px; height: 50px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+    width: 50px; height: 50px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
     border: 1px solid rgba(255,255,255,0.2);
 }
 
 .play-icon {
-    width: 0; 
-    height: 0; 
-    border-top: 8px solid transparent;
-    border-bottom: 8px solid transparent;
-    border-left: 12px solid #fff;
-    margin-left: 3px;
+    width: 0; height: 0; 
+    border-top: 8px solid transparent; border-bottom: 8px solid transparent;
+    border-left: 12px solid #fff; margin-left: 3px;
 }
 
 .review-title {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 15px;
+    position: absolute; bottom: 0; left: 0; width: 100%; padding: 15px;
     background: linear-gradient(to top, #000, transparent);
-    color: #fff;
-    font-size: 0.9rem;
-    font-weight: 500;
+    color: #fff; font-size: 0.9rem; font-weight: 500;
 }
 
+/* ROBUST ANIMATION: Moves exactly 50% (the width of the original set) */
 @keyframes scrollLeft {
     0% { transform: translateX(0); }
-    100% { transform: translateX(calc(-1 * (var(--card-width) * 5 + var(--gap) * 5))); } 
-    /* The calculation above must match exactly HALF the number of cards if duplicated */
+    100% { transform: translateX(-50%); } 
 }
 
-/* --- FOOTER & OTHER --- */
-.features { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
-.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-.card { background: var(--glass-bg); border: 1px solid var(--glass-border); padding: 30px; border-radius: 12px; transition: transform 0.3s ease, border-color 0.3s ease; }
-.card:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.2); }
-.card h3 { font-size: 1.25rem; margin-bottom: 10px; color: #fff; }
-.card p { font-size: 0.95rem; color: #999; line-height: 1.6; }
-footer { text-align: center; padding: 60px 20px; color: #444; font-size: 0.9rem; margin-top: auto; }
-.fade-in { opacity: 0; animation: fadeUp 0.8s ease forwards; }
-.fade-in:nth-child(1) { animation-delay: 0.1s; }
-.fade-in:nth-child(2) { animation-delay: 0.2s; }
-.status { display: flex; align-items: center; gap: 10px; font-family: 'Courier New', monospace; color: #666; font-size: 0.85rem; padding: 8px 16px; background: rgba(0,0,0,0.3); border-radius: 50px; border: 1px solid var(--glass-border); }
-.dot { width: 8px; height: 8px; background-color: #00ff88; border-radius: 50%; box-shadow: 0 0 10px #00ff88; }
-@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-@media (max-width: 768px) {
-    nav { flex-direction: column; gap: 15px; }
-    .hero { padding-top: 80px; }
+/* Mobile Tweak for Static Mode: Align left instead of center if they overflow */
+@media (max-width: 800px) {
+    .slider-track.scroll-static {
+        justify-content: flex-start; /* So you can scroll to see the first one */
+    }
 }
