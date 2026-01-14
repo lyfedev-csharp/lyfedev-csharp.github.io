@@ -1,12 +1,14 @@
-/* --- RESET & FONTS --- */
+/* --- 1. VARIABLES & RESET --- */
 :root {
     --bg-color: #050505;
     --text-color: #ffffff;
     --text-muted: #888888;
-    --accent-glow: rgba(199, 125, 255, 0.15); /* Purple tint from source */
+    --accent-glow: rgba(199, 125, 255, 0.15);
     --accent-solid: #c77dff;
     --glass-border: rgba(255, 255, 255, 0.08);
     --glass-bg: rgba(255, 255, 255, 0.03);
+    
+    /* New Slider Variables */
     --card-width: 320px;
     --gap: 30px;
 }
@@ -28,7 +30,8 @@ body {
     position: relative;
 }
 
-/* --- UNIQUE DESIGN: NOISE TEXTURE --- */
+/* --- 2. GLOBAL EFFECTS (Noise & Glow) --- */
+/* Noise Texture */
 body::before {
     content: "";
     position: fixed;
@@ -39,9 +42,9 @@ body::before {
     z-index: -1;
 }
 
-/* --- BACKGROUND GLOW ANIMATION --- */
+/* Breathing Background Glow */
 .glow-bg {
-    position: fixed; /* Fixed so it doesn't scroll away */
+    position: fixed;
     top: -200px;
     left: 50%;
     transform: translateX(-50%);
@@ -60,7 +63,7 @@ body::before {
     100% { opacity: 1; transform: translateX(-50%) scale(1.2); }
 }
 
-/* --- NAVIGATION --- */
+/* --- 3. NAVIGATION --- */
 nav {
     display: flex;
     justify-content: space-between;
@@ -121,7 +124,7 @@ nav {
     box-shadow: 0 0 15px rgba(255,255,255,0.4);
 }
 
-/* --- HERO SECTION --- */
+/* --- 4. HERO SECTION --- */
 .hero {
     padding: 120px 20px 60px;
     text-align: center;
@@ -149,7 +152,7 @@ h1 {
     line-height: 1.6;
 }
 
-/* --- BUTTONS --- */
+/* --- 5. BUTTONS & STATUS --- */
 .cta-container {
     display: flex;
     gap: 15px;
@@ -184,28 +187,90 @@ h1 {
     background-color: rgba(255,255,255,0.1);
 }
 
-/* --- SCROLLING REVIEWS --- */
+.status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Courier New', monospace;
+    color: #666;
+    font-size: 0.85rem;
+    padding: 8px 16px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 50px;
+    border: 1px solid var(--glass-border);
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    background-color: #00ff88;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #00ff88;
+}
+
+/* --- 6. GRIDS & CARDS (Restored) --- */
+.features {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    padding: 30px;
+    border-radius: 12px;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255,255,255,0.2);
+}
+
+.card h3 {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.card p {
+    font-size: 0.95rem;
+    color: #999;
+    line-height: 1.6;
+}
+
+/* Team Page Images (Moved here for safety) */
+.worker-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(255,255,255,0.1);
+    margin-bottom: 15px;
+}
+
+/* --- 7. NEW: INFINITE SLIDER --- */
 .slider-container {
     width: 100%;
     margin-top: 40px;
     overflow: hidden; 
     position: relative;
-    /* For static centering */
     display: flex; 
 }
 
-/* Fade masks (Only show these when scrolling) */
+/* Fade masks */
 .slider-container:not(.no-mask)::before,
 .slider-container:not(.no-mask)::after {
     content: "";
-    position: absolute;
-    top: 0;
-    width: 150px;
-    height: 100%;
-    z-index: 2;
-    pointer-events: none;
+    position: absolute; top: 0; width: 150px; height: 100%; z-index: 2; pointer-events: none;
 }
-
 .slider-container::before { left: 0; background: linear-gradient(to right, var(--bg-color), transparent); }
 .slider-container::after { right: 0; background: linear-gradient(to left, var(--bg-color), transparent); }
 
@@ -213,28 +278,23 @@ h1 {
     display: flex;
     width: max-content;
     gap: var(--gap);
-    padding-bottom: 20px; /* Space for scrollbar if static */
+    padding-bottom: 20px;
 }
 
-/* STATE A: ACTIVE (More than 5 items) - Auto Scroll */
+/* State: Active (Moving) */
 .slider-track.scroll-active {
     animation: scrollLeft 40s linear infinite;
 }
 
-/* STATE B: STATIC (5 or less) - Centered & Manual Scroll */
+/* State: Static (Centered) */
 .slider-track.scroll-static {
-    width: 100%; /* Fill container */
-    justify-content: center; /* Center items */
-    padding-left: 20px;
-    padding-right: 20px;
+    width: 100%;
+    justify-content: center;
+    padding-left: 20px; padding-right: 20px;
 }
 
-/* Hover pause */
-.slider-track.scroll-active:hover {
-    animation-play-state: paused;
-}
+.slider-track.scroll-active:hover { animation-play-state: paused; }
 
-/* Review Card Styling */
 .review-card {
     width: var(--card-width);
     height: 200px;
@@ -278,15 +338,37 @@ h1 {
     color: #fff; font-size: 0.9rem; font-weight: 500;
 }
 
-/* ROBUST ANIMATION: Moves exactly 50% (the width of the original set) */
 @keyframes scrollLeft {
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); } 
 }
 
-/* Mobile Tweak for Static Mode: Align left instead of center if they overflow */
-@media (max-width: 800px) {
+/* --- 8. FOOTER & ANIMATIONS --- */
+footer {
+    text-align: center;
+    padding: 60px 20px;
+    color: #444;
+    font-size: 0.9rem;
+    margin-top: auto;
+}
+
+.fade-in { opacity: 0; animation: fadeUp 0.8s ease forwards; }
+.fade-in:nth-child(1) { animation-delay: 0.1s; }
+.fade-in:nth-child(2) { animation-delay: 0.2s; }
+.fade-in:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- 9. MOBILE RESPONSIVE --- */
+@media (max-width: 768px) {
+    nav { flex-direction: column; gap: 15px; }
+    .hero { padding-top: 80px; }
+    
     .slider-track.scroll-static {
-        justify-content: flex-start; /* So you can scroll to see the first one */
+        justify-content: flex-start;
+        overflow-x: auto;
     }
 }
