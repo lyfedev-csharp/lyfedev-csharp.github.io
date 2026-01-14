@@ -3,8 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reviews & Showcases | Elysor</title>
+    <title>Reviews | Elysor</title>
     <link rel="stylesheet" href="../assets/style.css">
+    
+    <style>
+        /* --- EXCLUSIVE REVIEW SLIDER STYLES --- */
+        /* These only apply to this page so nothing else breaks */
+        
+        .reviews-wrapper {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .reviews-container {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding: 20px 0;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none; /* Hide scrollbar for Chrome/Safari below */
+            -ms-overflow-style: none;
+        }
+
+        .reviews-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .review-card-modern {
+            flex: 0 0 350px; /* Width of each card */
+            height: 220px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            scroll-snap-align: start;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .review-card-modern:hover {
+            border-color: rgba(255,255,255,0.3);
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.05);
+        }
+
+        .review-img {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover;
+            opacity: 0.4;
+            z-index: 1;
+            transition: opacity 0.3s;
+        }
+
+        .review-card-modern:hover .review-img {
+            opacity: 0.7;
+        }
+
+        .review-info {
+            position: relative;
+            z-index: 2;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+        }
+
+        .review-info h3 {
+            font-size: 1.1rem;
+            color: #fff;
+            margin: 0;
+        }
+
+        /* AUTO-SCROLL ANIMATION (Only if > 5 reviews) */
+        .auto-scroll-active {
+            animation: scrollLoop 30s linear infinite;
+            width: max-content;
+        }
+
+        @keyframes scrollLoop {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .reviews-container:hover .auto-scroll-active {
+            animation-play-state: paused;
+        }
+    </style>
 </head>
 <body>
 
@@ -14,7 +105,7 @@
         <a href="/" class="logo">Elysor</a>
         <div class="nav-links">
             <a href="/products">Products</a>
-            <a href="/reviews" class="active">Reviews</a>
+            <a href="/reviews" style="color: #fff;">Reviews</a>
             <a href="/about">About</a>
             <a href="/team">Team</a>
         </div>
@@ -22,36 +113,67 @@
     </nav>
 
     <section class="hero">
-        <h1 class="fade-in">Showcase</h1>
-        <p class="subtitle fade-in">See Elysor in action. Community showcases and reviews.</p>
+        <h1 class="fade-in">Reviews</h1>
+        <p class="subtitle fade-in">Community showcases and feedback from our users.</p>
     </section>
 
-    <div class="slider-container fade-in">
-        <div class="slider-track">
-            
-            <a href="https://www.youtube.com/watch?v=CFqOD49Otf4" target="_blank" class="review-card">
-                <img src="https://img.youtube.com/vi/CFqOD49Otf4/mqdefault.jpg" class="review-thumb" alt="Video Review">
-                <div class="play-overlay"><div class="play-icon"></div></div>
-                <div class="review-title">This Menu is ACTUALLY Overpowered... 😳 | ELYSØR Paid Menu | Gorilla Tag Modding</div>
+    <div class="reviews-wrapper fade-in">
+        <div class="reviews-container" id="reviewTrack">
+            <a href="#" class="review-card-modern">
+                <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/mqdefault.jpg" class="review-img">
+                <div class="review-info">
+                    <h3>Menu Showcase 2026</h3>
+                </div>
             </a>
 
-            <a href="https://www.youtube.com/watch?v=kt5FOW3Uhzg" target="_blank" class="review-card">
-                <img src="https://img.youtube.com/vi/kt5FOW3Uhzg/mqdefault.jpg" class="review-thumb" alt="Video Review">
-                <div class="play-overlay"><div class="play-icon"></div></div>
-                <div class="review-title">[WORKING KICK/CRASH MODS] i tested the Elysor menu [FREE MENU \|/ DEPRECATED]</div>
+            <a href="#" class="review-card-modern">
+                <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/mqdefault.jpg" class="review-img">
+                <div class="review-info">
+                    <h3>Experimental Features</h3>
+                </div>
             </a>
 
-            <a href="https://www.youtube.com/watch?v=rPFpjFsCnQE" target="_blank" class="review-card">
-                <img src="https://img.youtube.com/vi/rPFpjFsCnQE/mqdefault.jpg" class="review-thumb" alt="Video Review">
-                <div class="play-overlay"><div class="play-icon"></div></div>
-                <div class="review-title">I tested the elysor mod menu! (with PuzzledPeace6d ) and did some fun stuff  [FREE MENU \|/ DEPRECATED]</div>
+            <a href="#" class="review-card-modern">
+                <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/mqdefault.jpg" class="review-img">
+                <div class="review-info">
+                    <h3>Performance Test</h3>
+                </div>
+            </a>
+
+            <a href="#" class="review-card-modern">
+                <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/mqdefault.jpg" class="review-img">
+                <div class="review-info">
+                    <h3>Server-Side Mods</h3>
+                </div>
+            </a>
+
+            <a href="#" class="review-card-modern">
+                <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/mqdefault.jpg" class="review-img">
+                <div class="review-info">
+                    <h3>User Feedback #1</h3>
+                </div>
             </a>
 
             </div>
     </div>
 
     <footer>© 2026 Elysor Products</footer>
-    
+
     <script src="../assets/main.js"></script>
+
+    <script>
+        const track = document.getElementById('reviewTrack');
+        const cards = track.querySelectorAll('.review-card-modern');
+        
+        // If there are more than 5 cards, enable the auto-moving loop
+        if (cards.length > 5) {
+            // Duplicate the cards for a seamless infinite loop
+            const cardMarkup = track.innerHTML;
+            track.innerHTML = cardMarkup + cardMarkup;
+            
+            // Apply the animation class
+            track.classList.add('auto-scroll-active');
+        }
+    </script>
 </body>
 </html>
